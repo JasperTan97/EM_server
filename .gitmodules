@@ -1,0 +1,3 @@
+[submodule "src/DynamixelSDK"]
+	path = src/DynamixelSDK
+	url = https://github.com/JasperTan97/DynamixelSDK.git
