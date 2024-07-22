@@ -1,0 +1,68 @@
+# Use the official ROS 2 Humble image as a parent image
+FROM osrf/ros:humble-desktop
+
+# Install common dependencies
+RUN apt-get update && apt-get install -y \
+    python3-colcon-common-extensions \
+    python3-pip \
+    nano \
+    git \
+    apt-utils \
+    curl \
+    dialog \
+    software-properties-common \
+    x11-apps \
+    libgl1-mesa-glx \
+    libxkbcommon-x11-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Add ROS 2 apt repository and key
+RUN apt-get update \
+    && apt-get install -y software-properties-common \
+    && add-apt-repository universe \
+    && apt-get update \
+    && apt-get install -y curl \
+    && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add - \
+    && sh -c 'echo "deb http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list' \
+    && apt-get update
+
+# Install ROS 2 packages including ament_index_python and rmw_cyclonedds_cpp
+RUN apt-get update && apt-get install -y \
+    ros-humble-navigation2 \
+    ros-humble-nav2-bringup \
+    ros-humble-turtlebot3 \
+    ros-humble-turtlebot3-simulations \
+    ros-humble-ament-index-python \
+    ros-humble-geometry-msgs \
+    ros-humble-launch-ros \
+    ros-humble-nav2-common \
+    ros-humble-nav2-simple-commander \
+    ros-humble-nav-msgs \
+    ros-humble-rclpy \
+    ros-humble-rosidl-parser \
+    ros-humble-sensor-msgs \
+    ros-humble-std-msgs \
+    ros-humble-tf2-ros-py \
+    ros-humble-tf-transformations \
+    ros-humble-visualization-msgs \
+    ros-humble-rmw-cyclonedds-cpp \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set PYTHONPATH to include system-wide directories
+ENV PYTHONPATH="/opt/ros/humble/lib/python3.8/site-packages:/usr/lib/python3/dist-packages:${PYTHONPATH}"
+
+# Use BuildKit for improved performance (optional, uncomment if you prefer)
+ENV DOCKER_BUILDKIT=1
+
+# Copy requirements.txt into the container
+COPY requirements.txt /tmp/requirements.txt
+
+RUN pip3 install --upgrade pip
+RUN pip3 install virtualenv
+
+# Install Python dependencies
+RUN pip3 install -r /tmp/requirements.txt
+
+# Set entrypoint
+CMD ["bash"]
+

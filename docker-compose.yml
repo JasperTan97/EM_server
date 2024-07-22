@@ -1,0 +1,17 @@
+version: '3'
+services:
+  ros2_humble:
+    image: ros2_humble   # Name of the Docker image
+    build: .             # Context for building the image (current directory)
+    volumes:
+      - ./src:/ros2_ws/src  # Mount host directory to container directory
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw  # Mount X11 socket for display forwarding
+    environment:
+      - DISPLAY=${DISPLAY}  # Forward the DISPLAY environment variable
+      - QT_X11_NO_MITSHM=1  # Necessary for Qt applications to run in the container
+    stdin_open: true     # Keep STDIN open even if not attached
+    tty: true            # Allocate a pseudo-TTY
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    network_mode: host   # Use the host network
+
