@@ -23,7 +23,7 @@ Now simply build with (don't forget to give execute access)
 ./build.sh
 ```
 
-First we build our base container. Here, all relevant ros2 files and python libraries are installed.
+OR we build our base container. Here, all relevant ros2 files and python libraries are installed.
 
 ```sh
 cd docker_base
