@@ -18,6 +18,11 @@ docker --version
 
 ## First time set-up of this repo
 
+Now simply build with (don't forget to give execute access)
+```sh
+./build.sh
+```
+
 First we build our base container. Here, all relevant ros2 files and python libraries are installed.
 
 ```sh
@@ -28,7 +33,7 @@ cd ..
 
 Next, we will set up the permanent volume (src folder), and open usb ports if necessary.
 ```sh
-docker compose build
+docker-compose build
 ```
 
 ## Running the docker container
