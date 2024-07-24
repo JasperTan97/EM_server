@@ -1,3 +1,9 @@
 [submodule "src/DynamixelSDK"]
 	path = src/DynamixelSDK
 	url = https://github.com/JasperTan97/DynamixelSDK.git
+[submodule "src/EM_fleetmanager"]
+	path = src/EM_fleetmanager
+	url = https://github.com/swisscatplus/EM_fleetmanager.git
+[submodule "src/EM_pathplanning"]
+	path = src/EM_pathplanning
+	url = https://github.com/JasperTan97/EM_pathplanning.git
