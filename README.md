@@ -52,10 +52,25 @@ cd ~/ros2_humble_ws && docker-compose down
 
 Some nice aliases I use in ~/.bashrc are:
 ```bash
-alias docker-compose-up='cd ~/ros2_humble_ws && docker-compose up -d'
+alias docker-compose-up='cd ~/ros2_humble_ws && docker-compose up -d && docker-compose exec ros2_humble /bin/bash'
 alias docker-compose-attach='docker-compose exec ros2_humble /bin/bash'
 alias docker-compose-down='cd ~/ros2_humble_ws && docker-compose down'
 ```
+
+### Using ign gazebo (for unix OS)
+Gazebo fortress has been configured in this container as well. However, we must allow docker to access the X-server, which allows GUI on a linux system. This can be done by the following line:
+```bash
+xhost +local:docker
+```
+This can also be added to your local machine's bashrc file for convenience. 
+
+Recall that gazebo now starts with the following command:
+```bash
+ign gazebo
+```
+
+### Using ign gazebo (for windows)
+This is the work for someone who uses windows. 
 
 ## Running ROS2
 In the container, the workspace should be fully build. Simply source it before using.
