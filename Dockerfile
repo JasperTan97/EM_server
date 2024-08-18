@@ -10,6 +10,7 @@ COPY src /ros2_ws/src
 # Install ROS2 dependencies
 RUN apt-get update && rosdep update && rosdep install --from-paths src --ignore-src -r -y
 
+# Install gazebo using a temporary terminal
 RUN bash -c "\
     apt-get update && \
     apt-get install -y lsb-release gnupg && \

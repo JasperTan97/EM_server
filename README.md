@@ -70,7 +70,32 @@ ign gazebo
 ```
 
 ### Using ign gazebo (for windows)
-This is the work for someone who uses windows. 
+This is the work for someone who uses windows. You may have to remove the following lines in the docker compose, but I have not tested this:
+```yml
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw  # Mount X11 socket for display forwarding
+      - $HOME/.Xauthority:/root/.Xauthority:ro
+    environment:
+      - DISPLAY=${DISPLAY}  # Forward the DISPLAY environment variable
+      - QT_X11_NO_MITSHM=1  # Necessary for Qt applications to run in the container
+      - LIBGL_ALWAYS_SOFTWARE=1  # Force software rendering
+      - XAUTHORITY=$XAUTH
+```
+If you do not need gazebo, remove those lines anyway, and also these in the Dockerfile in the present working directory.
+```Dockerfile
+# Install gazebo using a temporary terminal
+RUN bash -c "\
+    apt-get update && \
+    apt-get install -y lsb-release gnupg && \
+    curl -fsSL https://packages.osrfoundation.org/gazebo.gpg | tee /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg > /dev/null && \
+    echo 'deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main' > /etc/apt/sources.list.d/gazebo-stable.list && \
+    apt-get update && \
+    apt-get install -y ignition-fortress && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*"
+
+# Ensure Ignition Gazebo (Fortress) is in the PATH
+ENV PATH="/usr/local/bin:/usr/bin:/opt/ros/humble/bin:${PATH}"
+```
 
 ## Running ROS2
 In the container, the workspace should be fully build. Simply source it before using.
