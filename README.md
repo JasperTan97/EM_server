@@ -69,6 +69,8 @@ Recall that gazebo now starts with the following command:
 ign gazebo
 ```
 
+If Gazebo is unnecessary, it is recommended to leave out building the ros_gz_bridge as it has a long build time. On my computer it takes roughly 12 minutes to build. 
+
 ### Using ign gazebo (for windows)
 This is the work for someone who uses windows. You may have to remove the following lines in the docker compose, but I have not tested this:
 ```yml

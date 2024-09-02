@@ -24,19 +24,20 @@ RUN bash -c "\
 ENV PATH="/usr/local/bin:/usr/bin:/opt/ros/humble/bin:${PATH}"
 
 # Build the ROS 2 workspace
-RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
-
-# Source the workspace setup script
-RUN echo "source /ros2_ws/install/setup.bash" >> ~/.bashrc
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && \
+    export MAKEFLAGS='-j 1' && \
+    colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --parallel-workers=1 --executor sequential"
 
 # Add aliases
 RUN echo "alias build_and_source='colcon build && source install/setup.bash'" >> ~/.bashrc
 RUN echo "alias apt_update_upgrade='apt-get update && apt-get update -y'" >> ~/.bashrc
+RUN echo "export PYTHONPATH=/opt/ros/humble/lib/python3/dist-packages" >> ~/.bashrc
+RUN echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> ~/.bashrc # needed for rpi and nav2 communication, for which fastdds doesnt work
+RUN echo "export ROS_DOMAIN_ID=10" >> ~/.bashrc # same than the one on the mobile robot
+RUN echo "export GZ_VERSION=fortress" >> ~/.bashrc # set gazebo environent variable
 RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 RUN echo "source /ros2_ws/install/setup.bash" >> ~/.bashrc
-RUN echo "export PYTHONPATH=/opt/ros/humble/lib/python3/dist-packages" >> ~/.bashrc
-RUN echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp " >> ~/.bashrc # needed for rpi and nav2 communication, for which fastdds doesnt work
-RUN echo "export ROS_DOMAIN_ID=10 " >> ~/.bashrc # same than the one on the mobile robot
+RUN echo "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >> ~/.bashrc
 
 # Set the entry point
 ENTRYPOINT ["/bin/bash", "-c"]

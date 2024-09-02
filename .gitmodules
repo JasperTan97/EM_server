@@ -7,3 +7,6 @@
 [submodule "src/EM_pathplanning"]
 	path = src/EM_pathplanning
 	url = https://github.com/JasperTan97/EM_pathplanning.git
+[submodule "src/EM_simulator"]
+	path = src/EM_simulator
+	url = https://github.com/JasperTan97/EM_simulator

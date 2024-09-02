@@ -9,10 +9,10 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw  # Mount X11 socket for display forwarding
       - $HOME/.Xauthority:/root/.Xauthority:ro
     environment:
-      - DISPLAY=${DISPLAY}  # Forward the DISPLAY environment variable
-      - QT_X11_NO_MITSHM=1  # Necessary for Qt applications to run in the container
-      - LIBGL_ALWAYS_SOFTWARE=1  # Force software rendering
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
       - XAUTHORITY=$XAUTH
+      - XDG_RUNTIME_DIR=/tmp/runtime-root
     stdin_open: true     # Keep STDIN open even if not attached
     tty: true            # Allocate a pseudo-TTY
     network_mode: host   # Use the host network
